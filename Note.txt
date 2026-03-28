@@ -1,0 +1,6 @@
+* Altissima Correlazione Globale: quasi tutta la heatmap tende al rosso scuro. questo credo voglia dire che  tutti i sensori seguono lo stesso ciclo orario Quando il
+sistema scalda, scalda ovunque.
+* Sensori molto simili: I sensori con varianza simile sono tipo il  w23, w24, w25 hanno tutti varianza circa 300 appariranno 
+Sono probabilmente montati nella stessa zona.
+* L'eccezione w14: Questo sensore ha la varianza più bassa di tutti (209). Nella mappa, risalterà perché avrà colori leggermente più chiari rispetto agli altri.
+anche il 9 é da tenere docchio epr lo stesso motivo se verranno applicate reti neurali forze é meglio operare con delle medie dei dati deli sensori piú correlati

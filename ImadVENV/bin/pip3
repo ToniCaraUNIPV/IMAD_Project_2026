@@ -1,0 +1,8 @@
+#!/mnt/c2e61c49-40bb-4eb8-a521-10fb7591f56b/FILE_HDD/Universita/IMAD/Progetto_Imad/IMAD_Project_2026/ImadVENV/bin/python3
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pip._internal.cli.main import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
