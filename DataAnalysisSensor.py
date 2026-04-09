@@ -3,6 +3,56 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import os
+import plotly.express as px
+import plotly.graph_objects as go
+
+def plot_3d_interactive(df, sensor_cols):
+    """
+    Crea uno scatterplot 3D interattivo:
+    X: w9
+    Y: w14
+    Z: Media dei restanti 23 sensori
+    """
+    print("\nGenerazione del grafico 3D interattivo...")
+
+    # 1. Identifichiamo i restanti 23 sensori (escludendo w9 e w14)
+    others = [s for s in sensor_cols if s not in ['w9', 'w14']]
+    
+    # 2. Creiamo una copia per non sporcare il dataframe originale
+    plot_df = df.copy()
+    plot_df['others_mean'] = plot_df[others].mean(axis=1)
+
+    # 3. Creazione del grafico con Plotly
+    fig = px.scatter_3d(
+        plot_df, 
+        x='w9', 
+        y='w14', 
+        z='others_mean',
+        color='others_mean', # Colore variabile in base alla temperatura
+        color_continuous_scale='Viridis',
+        labels={'others_mean': 'Media Altri 23', 'w9': 'Sensore w9', 'w14': 'Sensore w14'},
+        title='Correlazione 3D: w9 vs w14 vs Media Altri Sensori',
+        opacity=0.7
+    )
+
+    # Miglioramento dell'estetica e interattività
+    fig.update_layout(
+        margin=dict(l=0, r=0, b=0, t=40),
+        scene=dict(
+            xaxis_title='Temp w9',
+            yaxis_title='Temp w14',
+            zaxis_title='Temp Media Altri'
+        )
+    )
+
+    # Salva come file HTML interattivo
+    output_html = "./Grafici/DataAnalysis/scatter_3d_interattivo.html"
+    fig.write_html(output_html)
+    
+    # Se sei in un notebook (Jupyter/Colab), lo mostra a schermo
+    # fig.show() 
+    
+    print(f"Grafico 3D salvato in: {output_html}")
 
 def sanitize_dataset(input_path, output_path):
     """
@@ -123,5 +173,8 @@ if __name__ == "__main__":
         
         # Fase 2: Analisi sul dataset pulito
         perform_analysis(df_sanitizzato, sensors)
+        
+        # --- NUOVA CHIAMATA PER IL GRAFICO 3D ---
+        plot_3d_interactive(df_sanitizzato, sensors)
     else:
         print(f"Errore: File {input_file} non trovato nella directory corrente.")
