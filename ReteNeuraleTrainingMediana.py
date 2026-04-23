@@ -23,7 +23,7 @@ tf.config.threading.set_inter_op_parallelism_threads(1)
 tf.config.threading.set_intra_op_parallelism_threads(1)
 
 # 1. CARICAMENTO DATI
-df = pd.read_csv('Dataset_trainingSanitificato.csv')
+df = pd.read_csv('Dataset/Dataset_random.csv')
 df.columns = df.columns.str.strip()
 
 # 2. SELEZIONE CORRETTA DEI SENSORI (Le ultime 25 colonne)
@@ -61,7 +61,7 @@ model = models.Sequential([
     layers.Dense(1)
 ])
 
-model.compile(optimizer='adam', loss='log_cosh', metrics=['mae'])
+model.compile(optimizer='adam', loss='huber', metrics=['mae'])
 
 # 7. ADDESTRAMENTO
 model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=50, batch_size=32)
@@ -76,3 +76,6 @@ print(f"\nR^2 Finale: {r2_score(y_test, y_pred):.4f}")
 #288 huber 64,32 -->0.8823
 #24 huber 64,32 -->0.8877
 #24 log_cosh 64,32 -->0.8878
+
+"""Con dataset randomicizzato"""
+#288 log_cosh 64,32 -->0.89
