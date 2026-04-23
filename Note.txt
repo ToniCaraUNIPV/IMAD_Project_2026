@@ -4,3 +4,11 @@ sistema scalda, scalda ovunque.
 Sono probabilmente montati nella stessa zona.
 * L'eccezione w14: Questo sensore ha la varianza più bassa di tutti (209). Nella mappa, risalterà perché avrà colori leggermente più chiari rispetto agli altri.
 anche il 9 é da tenere docchio epr lo stesso motivo se verranno applicate reti neurali forze é meglio operare con delle medie dei dati deli sensori piú correlati
+
+
+
+
+*file .keras contiene il modello, ma non contiene i valori di mu e sg (media e deviazione standard) che hai usato per normalizzare i dati.
+Consiglio: Insieme al file .keras, dovresti sempre salvare un piccolo file (magari un .json o un .pkl) che contenga i valori di 
+normalizzazione del carico e dei sensori. Se carichi il modello e gli dai in pasto temperature "reali" (es. 25°C)
+ invece di quelle "normalizzate" (es. 0.5), il modello darà risultati completamente sbagliati!
