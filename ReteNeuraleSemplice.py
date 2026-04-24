@@ -13,7 +13,7 @@ os.environ['PYTHONHASHSEED'] = str(RANDOM_STATE)
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'  # Forza CPU per evitare non-determinismo GPU
 os.environ['TF_DETERMINISTIC_OPS'] = '1'
 os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
-
+tf.keras.utils.set_random_seed(RANDOM_STATE)
 
 np.random.seed(RANDOM_STATE)
 tf.random.set_seed(RANDOM_STATE)
@@ -56,11 +56,12 @@ X_val = scaler.transform(X_val)
 X_test = scaler.transform(X_test)
 
 # 6. MODELLO
+initializer = tf.keras.initializers.GlorotUniform(seed=RANDOM_STATE)
 model = models.Sequential([
     layers.Input(shape=(27,)), 
-    layers.Dense(64, activation='relu'),
-    layers.Dense(32, activation='relu'),
-    layers.Dense(1)
+    layers.Dense(64, activation='relu', kernel_initializer=initializer),
+    layers.Dense(32, activation='relu', kernel_initializer=initializer),
+    layers.Dense(1, kernel_initializer=initializer)
 ])
 
 model.compile(optimizer='adam', loss='huber', metrics=['mae'])
