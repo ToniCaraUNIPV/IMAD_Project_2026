@@ -5,7 +5,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import r2_score
 import tensorflow as tf
-from tensorflow.keras import layers, models
+import keras
+from keras import layers, models
 
 # IMPOSTAZIONE RANDOM STATE PER RIPRODUCIBILITÀ COMPLETA
 RANDOM_STATE = 42
