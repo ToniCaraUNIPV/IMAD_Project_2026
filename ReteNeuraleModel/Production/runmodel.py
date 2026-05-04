@@ -1,4 +1,5 @@
 import os
+import sys
 import numpy as np
 import tensorflow as tf
 from keras import models
@@ -51,15 +52,29 @@ def run_prediction(sensor_values, timestamp):
     return load_reale
 
 if __name__ == "__main__":
-    print("--- ESECUZIONE MODELLO (PREDIZIONE) ---")
+    import argparse
     
-    # ESEMPIO: Sostituisci questi valori con quelli reali che vuoi testare
-    valori_sensori_esempio = [60.0] * 25 # 25 sensori tutti a 60
-    ora_esempio = 14
+    parser = argparse.ArgumentParser(description="Esegue la predizione del LOAD dai dati dei sensori.")
+    parser.add_argument("timestamp", type=int, help="L'ora del giorno (0-23)")
+    parser.add_argument("sensors", type=float, nargs=25, help="I 25 valori dei sensori (w1...w25) separati da spazio")
     
-    try:
-        risultato = run_prediction(valori_sensori_esempio, ora_esempio)
-        print(f"\nDati input: Ora {ora_esempio}, Sensori media 60")
-        print(f"RISULTATO -> LOAD PREVISTO: {risultato:.2f}")
-    except Exception as e:
-        print(f"ERRORE: {e}")
+    # Se non vengono passati argomenti, mostra l'aiuto o esegui un esempio
+    if len(sys.argv) == 1:
+        print("--- ESECUZIONE MODELLO (ESEMPIO) ---")
+        print("Uso: python runmodel.py <ora> <w1> <w2> ... <w25>")
+        valori_sensori_esempio = [60.0] * 25
+        ora_esempio = 14
+        try:
+            risultato = run_prediction(valori_sensori_esempio, ora_esempio)
+            print(f"\nEsempio -> Ora {ora_esempio}, Sensori media 60")
+            print(f"LOAD PREVISTO: {risultato:.2f}")
+        except Exception as e:
+            print(f"ERRORE: {e}")
+    else:
+        args = parser.parse_args()
+        try:
+            risultato = run_prediction(args.sensors, args.timestamp)
+            print(f"\nPrevisione per Ora {args.timestamp}:")
+            print(f"LOAD -> {risultato:.2f}")
+        except Exception as e:
+            print(f"ERRORE durante la predizione: {e}")
