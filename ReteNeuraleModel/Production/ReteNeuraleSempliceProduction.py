@@ -8,8 +8,8 @@ import tensorflow as tf
 from keras import layers, models
 import joblib
 
-# Aggiungiamo la cartella corrente al path per l'importazione del modulo grafici
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Aggiungiamo la cartella superiore (ReteNeuraleModel) al path per l'importazione
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import ReteNeuraleCreazioneGrafici as graphs
 
 # IMPOSTAZIONE RANDOM STATE PER RIPRODUCIBILITÀ COMPLETA
@@ -25,10 +25,23 @@ def train_and_save_model():
     Funzione che carica i dati, addestra la rete, salva i grafici 
     e genera i file .keras e .joblib necessari per la predizione.
     """
-    # 1. CARICAMENTO DATI
-    data_path = 'Dataset/Dataset_random.csv'
-    if not os.path.exists(data_path):
-        data_path = '../Dataset/Dataset_random.csv'
+    # 1. CARICAMENTO DATI (Cerca il dataset in base alla posizione dello script)
+    base_script_path = os.path.dirname(os.path.abspath(__file__))
+    # Percorsi possibili: dalla root o risalendo di due cartelle
+    data_options = [
+        os.path.join(base_script_path, "../../Dataset/Dataset_random.csv"),
+        'Dataset/Dataset_random.csv',
+        '../Dataset/Dataset_random.csv'
+    ]
+    
+    data_path = None
+    for path in data_options:
+        if os.path.exists(path):
+            data_path = path
+            break
+            
+    if data_path is None:
+        raise FileNotFoundError("Impossibile trovare Dataset/Dataset_random.csv. Verifica la posizione!")
 
     df = pd.read_csv(data_path)
     df.columns = df.columns.str.strip()
