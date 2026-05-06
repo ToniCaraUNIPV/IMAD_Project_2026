@@ -79,6 +79,7 @@ def train_and_save_model():
     initializer = tf.keras.initializers.GlorotUniform(seed=RANDOM_STATE)
     model = models.Sequential([
         layers.Input(shape=(len(colonne_totali),)), 
+        layers.Dense(128, activation='relu', kernel_initializer=initializer),
         layers.Dense(64, activation='relu', kernel_initializer=initializer),
         layers.Dense(32, activation='relu', kernel_initializer=initializer),
         layers.Dense(1, kernel_initializer=initializer)
