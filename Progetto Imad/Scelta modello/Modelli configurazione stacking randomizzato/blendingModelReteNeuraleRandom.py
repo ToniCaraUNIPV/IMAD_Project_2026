@@ -13,37 +13,30 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
 
+#low code platform
 
 
 
+ds = pd.read_csv('Dataset_random.csv')
+consumo = ds['LOAD']
+dati = ds.drop(columns = ['LOAD'])
 
-ds = pd.read_csv('L1_train.csv')
-consumo = ds.iloc[35066:, 1]
-dati = ds.iloc[35066:]
+dati['oraSin'] = np.sin(dati['TIMESTAMP'] * (2 * np.pi / 24))
+dati['oraCos'] = np.cos(dati['TIMESTAMP'] * (2 * np.pi / 24))
+dati = dati.drop(columns = ['TIMESTAMP'])
 
-dataSet = pd.DataFrame()
+# 1. Media termica dei sensori (il 'clima' generale dell'istante)
+#dati['temp_media'] = dati.filter(like='w').mean(axis=1)
 
+# 2. Variabilità tra i sensori (capisce se c'è un'attività localizzata)
+#dati['temp_std'] = dati.filter(like='w').std(axis=1)
 
+# 3. Differenza tra il punto più caldo e il più freddo
+#dati['temp_range'] = dati.filter(like='w').max(axis=1) - dati.filter(like='w').min(axis=1)
 
-#Setto dati per il modello
-
-sensoriMediana = dati.iloc[:, 1:].median(axis = 1)
-dataSet['medianaT'] = sensoriMediana
-
-sforzo = abs(dataSet['medianaT'] - 60)
-dataSet['sforzo'] = sforzo
-
-oreGiorno = dati.iloc[:, 0] % 24
-dataSet['oraSin'] = np.sin(oreGiorno * (2 * np.pi / 24))
-dataSet['oraCos'] = np.cos(oreGiorno * (2 * np.pi / 24))
-
-
-dataSet['s14'] = dati.iloc[:, 15]
-dataSet['s9'] = dati.iloc[:, 10]
-
-
-xTemp, xTest, yTemp, yTest = train_test_split(dataSet, consumo, test_size = 0.15, random_state = 42)
+xTemp, xTest, yTemp, yTest = train_test_split(dati, consumo, test_size = 0.15, random_state = 42)
 xTrain, xVal, yTrain, yVal = train_test_split(xTemp, yTemp, test_size = 0.18, random_state = 42)
+
 
 
 
@@ -58,30 +51,24 @@ xTest_scaled = scaler.transform(xTest)
 
 # Modelli 
 xgModel = XGBRegressor(
-    n_estimators = 2000,
-    learning_rate = 0.01, 
-    max_depth = 6, 
+    n_estimators = 8000, #5000
+    max_depth = 8, #8
+    subsample = 0.8, 
     colsample_bytree = 0.8,
-    subsample = 0.7,
-    random_state = 42,
-    n_jobs = -1,
-    early_stopping_rounds = 70
+    random_state = 42, 
+    n_jobs = -1, 
+    early_stopping_rounds = 20, 
+    learning_rate = 0.01    #0.05
 )
-xgModel.fit(xTrain_scaled, yTrain, eval_set = [(xVal_scaled, yVal)], verbose = 100)
+xgModel.fit(xTrain_scaled, yTrain, eval_set = [(xVal_scaled, yVal)], verbose = 1000)
 
 
 
 lgbModel = LGBMRegressor(
-    n_estimators = 2000,
-    learning_rate = 0.01,
-    num_leaves = 31, #31
-    max_depth = 7,
-    min_child_samples = 20, #20
-    colsample_bytree = 0.8,
-    subsample = 0.8,
-    bagging_freq = 5,
-    importance_type = 'gain',
-    random_state = 42,
+    n_estimators = 15000, #5000
+    random_state = 42, 
+    learning_rate = 0.05,
+    num_leaves = 70, #50
     n_jobs = -1
 )
 lgbModel.fit(
@@ -95,17 +82,15 @@ lgbModel.fit(
 
 
 catModel = CatBoostRegressor(
-    iterations = 3800,          
-    learning_rate = 0.03,        
-    depth = 6,                  
-    l2_leaf_reg = 3,             
-    random_strength = 1,         
-    bagging_temperature = 1,     
-    loss_function = 'RMSE',      
-    eval_metric = 'MAE',         
-    random_seed = 42,
-    verbose = 200,
-    thread_count = -1
+    iterations = 15800, #così è al massimo, posso tentare anche un 13000 oppure un 14000
+    learning_rate = 0.1,
+    depth = 9, #7
+    l2_leaf_reg = 12,
+    random_strength = 1,
+    loss_function = 'RMSE', 
+    eval_metric = 'MAE',
+    random_state = 42,
+    verbose = 1000 
 )
 catModel.fit(
     xTrain_scaled, yTrain,
@@ -119,7 +104,7 @@ mpl = MLPRegressor(
     hidden_layer_sizes = (128, 64, 32),  
     activation = 'relu',
     solver = 'adam',
-    alpha = 0.01,                        
+    alpha = 0.1, #0.01                       
     learning_rate = 'adaptive',          # Adatta la velocità di apprendimento se si blocca
     early_stopping = True,               
     n_iter_no_change = 15,             
@@ -172,9 +157,15 @@ for nome, peso in zip(nuovoDataSet.columns, metaModel.coef_):
     print(f"{nome}: {peso:.4f}")
 
 
-#9.564752680497081
-#0.9303900121182692
-#152.69165291233344
+# Con dataSet Randomizzato
+# 6.062307363260181
+# 0.9696907164342475
+# 67.12707896757912
+
+# Eliminandp il timestamp
+# 6.186453824818169
+# 0.9688315472125799
+# 69.02991246954156
 
 
 #Grafico

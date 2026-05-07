@@ -82,7 +82,7 @@ ore = 200
 plt.figure(figsize = (12, 7))
 
 plt.plot(range(ore), yTest[:ore], label = 'modello reale', color = 'blue')
-plt.plot(range(ore), predictModel[:ore], label = 'modello LGBMR', color = 'red', linestyle = '--')
+plt.plot(range(ore), predictModel[:ore], label = 'modello Cat', color = 'red', linestyle = '--')
 plt.xlabel('ore')
 plt.ylabel('consumo')
 plt.title('Confronto modello')
