@@ -1,0 +1,7 @@
+ISTRUZIONI
+
+
+1) Inserire nel file "input.txt" il timestamp e i 25 sensori, il separatore può essere la ","
+2) Aprire il file "main.py"
+3) Eseguire il file "main.py"
+4) Viene generato un file "previsioni.txt" contenente le previsioni del modello
