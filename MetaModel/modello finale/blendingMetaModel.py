@@ -44,7 +44,7 @@ xTest_scaled = scaler.transform(xTest)
 
 # Modelli 
 xgModel = XGBRegressor(
-    n_estimators = 18000, #5000
+    n_estimators = 5000, #5000
     max_depth = 8, #8
     subsample = 0.8, 
     colsample_bytree = 0.8,
@@ -58,7 +58,7 @@ xgModel.fit(xTrain_scaled, yTrain, eval_set = [(xVal_scaled, yVal)], verbose = 1
 
 
 lgbModel = LGBMRegressor(
-    n_estimators = 15000, #5000
+    n_estimators = 5000, #5000
     random_state = 42, 
     learning_rate = 0.05,
     num_leaves = 70, #50
@@ -75,7 +75,7 @@ lgbModel.fit(
 
 
 catModel = CatBoostRegressor(
-    iterations = 15800, #così è al massimo, posso tentare anche un 13000 oppure un 14000
+    iterations = 8000, #così è al massimo, posso tentare anche un 13000 oppure un 14000
     learning_rate = 0.1,
     depth = 9, #7
     l2_leaf_reg = 12,
