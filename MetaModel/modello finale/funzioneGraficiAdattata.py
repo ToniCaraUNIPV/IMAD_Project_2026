@@ -52,20 +52,20 @@ def plot_results(y_val, yp_val, y_test, yp_test, metrics_val, metrics_test, save
 
     # ── [1, 0] Scatter Val ────────────────────────────────────────────
     ax = fig.add_subplot(gs[1, 0])
-    ax.scatter(y_val, yp_val, alpha=0.15, s=4, color="steelblue")
+    ax.scatter(yp_val, y_val, alpha=0.15, s=4, color="steelblue")
     mn, mx = min(y_val.min(), yp_val.min()), max(y_val.max(), yp_val.max())
     ax.plot([mn, mx], [mn, mx], "r--", linewidth=1.2, label="y=x")
     ax.set_title(f"Validation — Reale vs Predetto  (R²={metrics_val['r2']:.4f})", fontsize=12)
-    ax.set_xlabel("LOAD Reale"); ax.set_ylabel("LOAD Predetto")
+    ax.set_xlabel("LOAD Predetto"); ax.set_ylabel("LOAD Reale")
     ax.legend(fontsize=9); ax.grid(alpha=0.3)
 
     # ── [1, 1] Scatter Test ───────────────────────────────────────────
     ax = fig.add_subplot(gs[1, 1])
-    ax.scatter(y_test, yp_test, alpha=0.15, s=4, color="darkorange")
+    ax.scatter(yp_test, y_test, alpha=0.15, s=4, color="darkorange")
     mn, mx = min(y_test.min(), yp_test.min()), max(y_test.max(), yp_test.max())
     ax.plot([mn, mx], [mn, mx], "r--", linewidth=1.2, label="y=x")
     ax.set_title(f"Test — Reale vs Predetto  (R²={metrics_test['r2']:.4f})", fontsize=12)
-    ax.set_xlabel("LOAD Reale"); ax.set_ylabel("LOAD Predetto")
+    ax.set_xlabel("LOAD Predetto"); ax.set_ylabel("LOAD Reale")
     ax.legend(fontsize=9); ax.grid(alpha=0.3)
 
     # ── [2, :] Tabella metriche ───────────────────────────────────────
