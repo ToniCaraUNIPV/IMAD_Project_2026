@@ -65,8 +65,7 @@ Per eseguire previsioni utilizzando il meta-modello finale:
 3. Eseguire lo script `main.py`.
 4. Le previsioni verranno generate nel file `previsioni.txt`.
 
----
-*Progetto realizzato per l'Università degli Studi di Pavia - Anno 2026.*
+
 
 
 ## 📈 Prestazioni finali
@@ -83,3 +82,7 @@ Prestazioni finali del Meta modello utilizzato
 | RMSE (Errore Quadratico Medio Radicato) | 8.572 | 8.274 |
 | MAPE (Errore Percentuale) | 4.47% | 4.42% |
 | Coefficiente R² | 0.9661 | 0.9691 |  
+
+
+---
+*Progetto realizzato per l'Università degli Studi di Pavia - Anno 2026.*
