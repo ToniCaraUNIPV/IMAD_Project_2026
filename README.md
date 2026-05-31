@@ -67,3 +67,19 @@ Per eseguire previsioni utilizzando il meta-modello finale:
 
 ---
 *Progetto realizzato per l'Università degli Studi di Pavia - Anno 2026.*
+
+
+## 📈 Prestazioni finali
+
+Prestazioni finali del Meta modello utilizzato
+
+![report_finale_blending](Grafici/modelli/report_finale_blending.png)
+
+![report_finale_blending](ProgettoImadStart/Scelta%20modello/Modelli%20configurazione%20stacking/image.png)
+
+| Metrica di Performance  | Set di validazione | Set di Test |
+| --- | --- | --- |
+| MAE (Errore Medio Assoluto) | 6.282 | 6.147 |
+| RMSE (Errore Quadratico Medio Radicato) | 8.572 | 8.274 |
+| MAPE (Errore Percentuale) | 4.47% | 4.42% |
+| Coefficiente R² | 0.9661 | 0.9691 |  
